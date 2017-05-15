@@ -30,13 +30,13 @@
 typedef struct relicparam
 /* structure containing the cosmological model parameters */
 {
-	int dummy;
-	int entropy_model;
+    int dummy;
+    int entropy_model;
     double dd0,ndd,Tdend;		// Related to Dark Energy
     double sd0,nsd,Tsend;		// Related to Dark entropy
-	double Sigmad0,nSigmad,TSigmaend;
-	double nt0,nnt,Tnend;
-	double mgravitino;
+    double Sigmad0,nSigmad,TSigmaend;
+    double nt0,nnt,Tnend;
+    double mgravitino;
     double table_eff[276][3];   // Reads values from the SgStar files
     double eta0;                // Initial Baryon to photon ratio
     double Nnu;                 // Number of Neutrinos (e+- included)
@@ -50,8 +50,6 @@ typedef struct relicparam
     int selfConjugate;          // 1/0 for self-conjugate/non-self-conjugate WIMP
     double phiW;                // Parameterized WIMP chemical potential
     double Tinit;               // Initial temperature
-    /* TO DO: Include a way to vary the chemical potential! */
-    int vary_phiW;
 
 }
 relicparam;
@@ -105,7 +103,7 @@ void Init_dark_entropy(double sd0, double nsd, double T_end, struct relicparam* 
 void Init_dark_entropySigmaD(double Sigmad0, double nSigmad, double T_end, struct relicparam* paramrelic);
 void Init_nonthermal(double nt0, double nnt, double T_end, struct relicparam* paramrelic);
 void Init_wimp(double mass_wimp, double g_chi, double g_chi_tilde, int beta, int SM_coupling_wimp, double phiW,
-               int vary_phiW, int selfConjugate, struct relicparam* paramrelic);
+               int selfConjugate, struct relicparam* paramrelic);
 double dark_density(double T, struct relicparam paramrelic);
 double dark_entropy(double T, struct relicparam paramrelic);
 double dark_entropy_derivative(double T, struct relicparam paramrelic);

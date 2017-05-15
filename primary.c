@@ -15,7 +15,6 @@ typedef struct
     double mass_wimp;
     int coupling, type_wimp;
     double phiW;
-    int vary_phiW;
     double Tinit;
 } configuration;
 
@@ -66,8 +65,6 @@ static int handler(void* user, const char* section, const char* name,
           pconfig->coupling = atoi(value);
     } else if (MATCH("parameter", "phiW")) {
           pconfig->phiW = atof(value);
-    } else if (MATCH("parameter", "vary_phiW")) {
-          pconfig->vary_phiW = atoi(value);
     } else if (MATCH("parameter", "T9i")) {
           pconfig->Tinit = atof(value);
     } else {
@@ -114,15 +111,7 @@ int main(int argc,char** argv)
                "\t Must be 'standard', 'darkdens', 'reheating' or 'wimp'\n");
         exit(1);
     }
-    /*
-    char cwd[1024];
-       if (getcwd(cwd, sizeof(cwd)) != NULL)
-           fprintf(stdout, "Current working dir: %s\n", cwd);
-       else
-           perror("getcwd() error");
-       return 0;
-    exit(1);
-    */
+
     // Parsing the input file, storing it in 'config' structure
     configuration config;
 
@@ -193,18 +182,7 @@ int main(int argc,char** argv)
         }
         Init_cosmomodel_param(config.Tinit,config.eta,config.Nnu,config.dNnu,config.tau,config.xinu1,config.xinu2,
                               config.xinu3,&paramrelic);
-        Init_wimp(config.mass_wimp,gchi,gchi_t,fermion,config.coupling,config.phiW,config.vary_phiW,selfConjugate,
-                  &paramrelic);
-        /*
-        if (cosmo == 5) {
-            Init_dark_density(config.dd0,config.ndd,config.Tdend,&paramrelic);
-            Init_dark_entropy(config.sd0,config.nsd,config.Tsend,&paramrelic);
-            Init_dark_entropySigmaD(config.Sigmad0,config.nSigmad,config.TSigmaend,&paramrelic);
-        }
-        */
-    }
-    else {
-        // Cosmo = 0. Parameter-free SBBN. Do nothing.
+        Init_wimp(config.mass_wimp,gchi,gchi_t,fermion,config.coupling,config.phiW,selfConjugate,&paramrelic);
     }
 
     //OUTPUT
@@ -238,9 +216,6 @@ int main(int argc,char** argv)
 
     }
     else printf("\t [ERROR]  Uncertainty calculation failed\n\n");
-
-    printf("Params: eta=%.2e\tNeff=%.3f\ttau=%.1f\txi1=%.2e\txi2=%.2e\txi3=%.2e\n\n",paramrelic.eta0,
-           paramrelic.Nnu+paramrelic.dNnu,paramrelic.life_neutron,paramrelic.xinu1,paramrelic.xinu2,paramrelic.xinu3);
 
     int compat=bbn_excluded(0,paramrelic);
 
